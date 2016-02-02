@@ -9,6 +9,8 @@ namespace DialogueCreator
 {
     public class Line
     {
+        static int linesCounter = 0;
+
         public List<Response> Responses
         {
             get
@@ -47,11 +49,32 @@ namespace DialogueCreator
                 return text;
             }
         }
+        public int Id
+        {
+            get
+            {
+                return id;
+            }
 
+            set
+            {
+                id = value;
+            }
+        }
+
+        private int id;
         private bool toDelete = false;
         private string name = "";
         private string text = "";
-        private List<Response> responses = new List<Response>(); 
+        private List<Response> responses = new List<Response>();
+
+        private Random random = new Random();
+
+        public Line()
+        {
+            linesCounter += 1;
+            Id = int.Parse(random.Next(100, 999).ToString() + "0" + linesCounter.ToString());
+        }
 
         public bool IsComplete()
         {

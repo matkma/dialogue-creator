@@ -145,7 +145,25 @@ namespace DialogueCreator
         private void btn_LinkResp_Click(object sender, EventArgs e)
         {
             selectedResp.Next = selectedLink;
-            RefreshAllLists();
+            RefreshLinksList();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "Save dialogue";
+            sfd.Filter = "XML File|*.xml";
+            sfd.ShowDialog();
+
+            if (sfd.FileName != "")
+            {
+                Translator.Instance.Write(lines, sfd.FileName);
+            }
         }
 
 #endregion
@@ -286,14 +304,16 @@ namespace DialogueCreator
                 {
                     warning = true;
                     lbl_Error.Visible = true;
+                    saveToolStripMenuItem.Enabled = false;
                     return false;
                 }
             }
             warning = false;
             lbl_Error.Visible = false;
+            saveToolStripMenuItem.Enabled = true;
             return true;
         }
 
-        #endregion
+        #endregion 
     }
 }
