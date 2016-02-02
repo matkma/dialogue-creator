@@ -45,6 +45,9 @@
             this.btn_LinkResp = new System.Windows.Forms.Button();
             this.btn_RemNPC = new System.Windows.Forms.Button();
             this.btn_RemResp = new System.Windows.Forms.Button();
+            this.box_Linked = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lbl_Error = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // box_Resp
@@ -82,6 +85,7 @@
             this.text_Resp.Location = new System.Drawing.Point(148, 286);
             this.text_Resp.Multiline = true;
             this.text_Resp.Name = "text_Resp";
+            this.text_Resp.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.text_Resp.Size = new System.Drawing.Size(487, 102);
             this.text_Resp.TabIndex = 5;
             // 
@@ -109,6 +113,7 @@
             this.text_NPC.Location = new System.Drawing.Point(148, 40);
             this.text_NPC.Multiline = true;
             this.text_NPC.Name = "text_NPC";
+            this.text_NPC.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.text_NPC.Size = new System.Drawing.Size(487, 102);
             this.text_NPC.TabIndex = 10;
             // 
@@ -214,11 +219,43 @@
             this.btn_RemResp.UseVisualStyleBackColor = true;
             this.btn_RemResp.Click += new System.EventHandler(this.btn_RemResp_Click);
             // 
+            // box_Linked
+            // 
+            this.box_Linked.Enabled = false;
+            this.box_Linked.Location = new System.Drawing.Point(652, 494);
+            this.box_Linked.Name = "box_Linked";
+            this.box_Linked.Size = new System.Drawing.Size(120, 20);
+            this.box_Linked.TabIndex = 19;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(649, 478);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Linked to:";
+            // 
+            // lbl_Error
+            // 
+            this.lbl_Error.AutoSize = true;
+            this.lbl_Error.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lbl_Error.ForeColor = System.Drawing.Color.Red;
+            this.lbl_Error.Location = new System.Drawing.Point(12, 540);
+            this.lbl_Error.Name = "lbl_Error";
+            this.lbl_Error.Size = new System.Drawing.Size(302, 15);
+            this.lbl_Error.TabIndex = 21;
+            this.lbl_Error.Text = "Warning! There are some unlinked responses!";
+            this.lbl_Error.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.lbl_Error);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.box_Linked);
             this.Controls.Add(this.btn_RemResp);
             this.Controls.Add(this.btn_RemNPC);
             this.Controls.Add(this.btn_LinkResp);
@@ -262,6 +299,9 @@
         private System.Windows.Forms.Button btn_LinkResp;
         private System.Windows.Forms.Button btn_RemNPC;
         private System.Windows.Forms.Button btn_RemResp;
+        private System.Windows.Forms.TextBox box_Linked;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lbl_Error;
     }
 }
 

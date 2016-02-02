@@ -17,6 +17,7 @@ namespace DialogueCreator
         private Line selectedLine;
         private Response selectedResp;
         private Line selectedLink;
+        private bool warning = false;
          
         public Form1()
         {
@@ -26,6 +27,8 @@ namespace DialogueCreator
             box_Resp.DisplayMember = "Name";
             box_Links.DisplayMember = "Name";
         }
+
+        #region Event Handlers
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -80,101 +83,6 @@ namespace DialogueCreator
             RefreshRespList();
         }
 
-        private void SelectLine(bool on)
-        {
-            if (on)
-            {
-                selectedLine = box_NPC.SelectedItem as Line;
-            }
-            else
-            {
-                selectedLine = null;
-            }
-            SelectResp(false);
-            text_NPC.Enabled = on;
-            btn_SaveNPC.Enabled = on;
-            btn_RemNPC.Enabled = on;
-            box_Resp.Enabled = on;
-            btn_AddResp.Enabled = on;
-        }
-
-        private void SelectResp(bool on)
-        {
-            if (on)
-            {
-                selectedResp = box_Resp.SelectedItem as Response;      
-            }
-            else
-            {
-                selectedResp = null;
-            }
-            SelectLink(false);
-            RefreshLinksList();
-            btn_SaveResp.Enabled = on;
-            btn_RemResp.Enabled = on;
-            text_Resp.Enabled = on;
-            box_Links.Enabled = on;
-        }
-
-        private void SelectLink(bool on)
-        {
-            if (on)
-            {
-                selectedLink = box_Links.SelectedItem as Line;
-            }
-            else
-            {
-                selectedLink = null;
-            }
-            btn_LinkResp.Enabled = on;
-        }
-
-        public void RefreshNPCList()
-        {
-            box_NPC.Items.Clear();
-            foreach (Line line in lines)
-            {
-                line.IsComplete();
-                box_NPC.Items.Add(line);
-            }
-        }
-
-        public void RefreshRespList()
-        {
-            if (selectedLine != null)
-            {
-                box_Resp.Items.Clear();
-                foreach (Response resp in selectedLine.Responses)
-                {
-                    resp.isLinked();
-                    box_Resp.Items.Add(resp);
-                }
-            }
-            else
-            {
-                box_Resp.Items.Clear();
-            }
-        }
-
-        public void RefreshLinksList()
-        {
-            if (selectedResp != null)
-            {
-                box_Links.Items.Clear();
-                foreach (Line line in lines)
-                {
-                    if (!line.Equals(selectedLine))
-                    {
-                        box_Links.Items.Add(line);
-                    }
-                }
-            }
-            else
-            {
-                box_Links.Items.Clear();
-            }
-        }
-
         private void btn_RemNPC_Click(object sender, EventArgs e)
         {
             selectedLine.ToDelete = true;
@@ -224,12 +132,168 @@ namespace DialogueCreator
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (box_Links.SelectedItem != null)
+            {
+                SelectLink(true);
+            }
+            else
+            {
+                SelectResp(false);
+            }
         }
 
         private void btn_LinkResp_Click(object sender, EventArgs e)
         {
-
+            selectedResp.Next = selectedLink;
+            RefreshAllLists();
         }
+
+#endregion
+
+        #region Selects
+
+        private void SelectLine(bool on)
+        {
+            if (on)
+            {
+                selectedLine = box_NPC.SelectedItem as Line;
+            }
+            else
+            {
+                selectedLine = null;
+            }
+            SelectResp(false);
+            text_NPC.Enabled = on;
+            btn_SaveNPC.Enabled = on;
+            btn_RemNPC.Enabled = on;
+            box_Resp.Enabled = on;
+            btn_AddResp.Enabled = on;
+        }
+
+        private void SelectResp(bool on)
+        {
+            if (on)
+            {
+                selectedResp = box_Resp.SelectedItem as Response;
+            }
+            else
+            {
+                selectedResp = null;
+            }
+            SelectLink(false);
+            RefreshLinksList();
+            btn_SaveResp.Enabled = on;
+            btn_RemResp.Enabled = on;
+            text_Resp.Enabled = on;
+            box_Links.Enabled = on;
+        }
+
+        private void SelectLink(bool on)
+        {
+            if (on)
+            {
+                selectedLink = box_Links.SelectedItem as Line;
+            }
+            else
+            {
+                selectedLink = null;
+            }
+            btn_LinkResp.Enabled = on;
+        }
+
+        #endregion
+
+        #region Refreshes
+
+        private void RefreshNPCList()
+        {
+            box_NPC.Items.Clear();
+            foreach (Line line in lines)
+            {
+                line.SetName();
+                box_NPC.Items.Add(line);
+            }
+
+            CheckLinks();
+        }
+
+        private void RefreshRespList()
+        {
+            if (selectedLine != null)
+            {
+                box_Resp.Items.Clear();
+                foreach (Response resp in selectedLine.Responses)
+                {
+                    resp.SetName();
+                    box_Resp.Items.Add(resp);
+                }
+            }
+            else
+            {
+                box_Resp.Items.Clear();
+            }
+
+            CheckLinks();
+        }
+
+        private void RefreshLinksList()
+        {
+            if (selectedResp != null)
+            {
+                box_Links.Items.Clear();
+                foreach (Line line in lines)
+                {
+                    if (!line.Equals(selectedLine))
+                    {
+                        line.SetName();
+                        box_Links.Items.Add(line);
+                    }
+                }
+
+                if (selectedResp.Next != null)
+                {
+                    box_Linked.Text = selectedResp.Next.Name;
+                }
+                else
+                {
+                    box_Linked.Text = "";
+                }
+            }
+            else
+            {
+                box_Links.Items.Clear();
+            }
+
+            CheckLinks();
+        }
+
+        private void RefreshAllLists()
+        {
+            RefreshLinksList();
+            RefreshRespList();
+            RefreshNPCList();
+        }
+
+        #endregion
+
+        #region Other
+
+        private bool CheckLinks()
+        {
+            foreach (Line line in lines)
+            {
+                if (!line.IsComplete())
+                {
+                    warning = true;
+                    lbl_Error.Visible = true;
+                    return false;
+                }
+            }
+            warning = false;
+            lbl_Error.Visible = false;
+            return true;
+        }
+
+        #endregion
     }
 }

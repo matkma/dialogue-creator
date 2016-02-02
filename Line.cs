@@ -55,17 +55,10 @@ namespace DialogueCreator
 
         public bool IsComplete()
         {
-            SetName();
-            if (responses.Count.Equals(0))
-            {
-                name = "(!) " + name;
-                return false;
-            }
             foreach (Response resp in responses)
             {
                 if (!resp.isLinked())
                 {
-                    name = "(!) " + name; 
                     return false;
                 }
             } 

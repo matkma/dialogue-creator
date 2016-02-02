@@ -73,13 +73,11 @@ namespace DialogueCreator
 
         public bool isLinked()
         {
-            SetName();
             if (next != null && previous != null)
             {
                 return true;
             }
 
-            name = "(!) " + name; 
             return false;
         }
 
