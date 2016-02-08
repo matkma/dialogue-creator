@@ -76,6 +76,11 @@ namespace DialogueCreator
             Id = int.Parse(random.Next(100, 999).ToString() + "0" + linesCounter.ToString());
         }
 
+        ~Line()
+        {
+            linesCounter -= 1;
+        }
+
         public bool IsComplete()
         {
             foreach (Response resp in responses)

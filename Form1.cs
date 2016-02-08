@@ -166,6 +166,20 @@ namespace DialogueCreator
             }
         }
 
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Title = "Open dialogue";
+            ofd.Filter = "XML File|*.xml";
+            ofd.ShowDialog();
+
+            if (ofd.FileName != "")
+            {
+                Translator.Instance.Read(lines, ofd.FileName);
+            }
+
+            RefreshAllLists();
+        }
 #endregion
 
         #region Selects
@@ -314,6 +328,6 @@ namespace DialogueCreator
             return true;
         }
 
-        #endregion 
+        #endregion      
     }
 }
