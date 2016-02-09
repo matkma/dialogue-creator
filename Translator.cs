@@ -61,30 +61,28 @@ namespace DialogueCreator
                     if (element != null) lines.Last().SetText(element.Value);
                 }
 
-            if (xElement1 != null)
+            if (xElement1 == null) return;
+            {
                 foreach (var xline in xElement1.Elements("Line"))
                 {
                     var xElement = xline.Element("Empty");
-                    if (xElement != null && xElement.Value.Equals("False"))
+                    if (xElement == null || !xElement.Value.Equals("False")) continue;
+                    var element = xline.Element("Id");
+                    if (element == null) continue;
+                    var id = int.Parse(element.Value);
+                    var element1 = xline.Element("Responses");
+                    if (element1 == null) continue;
+                    foreach (var xresponse in element1.Elements("Response"))
                     {
-                        var element = xline.Element("Id");
-                        if (element != null)
-                        {
-                            var id = int.Parse(element.Value);
-                            var element1 = xline.Element("Responses");
-                            if (element1 != null)
-                                foreach (var xresponse in element1.Elements("Response"))
-                                {
-                                    var line = lines.First(it => it.Id.Equals(id));
-                                    line.Responses.Add(new Response(line));
-                                    var o = xresponse.Element("Text");
-                                    if (o != null)
-                                        line.Responses.Last().SetText(o.Value);
-                                    line.Responses.Last().Next = lines.First(it => it.Id.Equals(int.Parse(xresponse.Element("Next_Id").Value)));
-                                }
-                        }
+                        var line = lines.First(it => it.Id.Equals(id));
+                        line.Responses.Add(new Response(line));
+                        var o = xresponse.Element("Text");
+                        if (o != null)
+                            line.Responses.Last().SetText(o.Value);
+                        line.Responses.Last().Next = lines.First(it => it.Id.Equals(int.Parse(xresponse.Element("Next_Id").Value)));
                     }
                 }
+            }
         }
 
         private void CreateLine(Line line, XmlTextWriter writer)
@@ -122,9 +120,6 @@ namespace DialogueCreator
             writer.WriteStartElement("Response");
             writer.WriteStartElement("Text");
             writer.WriteString(resp.Text);
-            writer.WriteEndElement();
-            writer.WriteStartElement("Previous_Id");
-            writer.WriteString(resp.Previous.Id.ToString());
             writer.WriteEndElement();
             writer.WriteStartElement("Next_Id");
             writer.WriteString(resp.Next.Id.ToString());

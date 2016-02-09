@@ -18,7 +18,9 @@ namespace DialogueCreator
         private Response selectedResp;
         private Line selectedLink;
         private bool warning = false;
-         
+        
+        private PlayForm playForm = new PlayForm(); 
+
         public Form1()
         {
             InitializeComponent();
@@ -319,15 +321,39 @@ namespace DialogueCreator
                     warning = true;
                     lbl_Error.Visible = true;
                     saveToolStripMenuItem.Enabled = false;
+                    playToolStripMenuItem.Enabled = false;
                     return false;
                 }
             }
             warning = false;
             lbl_Error.Visible = false;
             saveToolStripMenuItem.Enabled = true;
+            playToolStripMenuItem.Enabled = true;
             return true;
         }
 
-        #endregion      
+        #endregion
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Do you want to create new Dialogue? Unsaved changes will be deleted!", "New Dialogue", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                lines.Clear();
+                selectedLine = null;
+                selectedResp = null;
+                selectedLink = null;
+                box_Linked.Text = "";
+                text_NPC.Text = "";
+                text_Resp.Text = "";
+                RefreshAllLists();
+            }
+        }
+
+        private void playToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            playForm.StartForm(lines);
+        }
     }
 }

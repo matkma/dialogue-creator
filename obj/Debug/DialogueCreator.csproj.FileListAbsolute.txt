@@ -7,3 +7,4 @@ c:\users\mateusz.kmak\documents\visual studio 2015\Projects\DialogueCreator\obj\
 c:\users\mateusz.kmak\documents\visual studio 2015\Projects\DialogueCreator\obj\Debug\DialogueCreator.csproj.GenerateResource.Cache
 c:\users\mateusz.kmak\documents\visual studio 2015\Projects\DialogueCreator\obj\Debug\DialogueCreator.exe
 c:\users\mateusz.kmak\documents\visual studio 2015\Projects\DialogueCreator\obj\Debug\DialogueCreator.pdb
+C:\Users\mateusz.kmak\Documents\Visual Studio 2015\Projects\DialogueCreator\obj\Debug\DialogueCreator.PlayForm.resources
